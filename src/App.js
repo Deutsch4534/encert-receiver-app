@@ -104,21 +104,21 @@ class App extends Component {
               let arr = response.data.data.results
               let displayCerts = arr.map((cert, i) => {
                 return (
-                    <Col key={i} md={3} sm={12}>
-                        <Card
-                        onClick={() => that.showModal()}
-                        // style={{ width: 300 }}
-                        cover={<img alt="example" src="http://ibaes.iba.edu.pk/wp-content/uploads/2019/03/invent-1-300x189.png" />}
-                      // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
-                      >
-                        <Meta
-                          avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                          title= {cert.achievement_title}
-                          description="This is the description"
-                        />
-                      </Card>
-                    </Col>
-                  );
+                  <Col style={{marginBottom: '20px'}} md={3} sm={12}>
+                    <Card
+                      onClick={() => this.showModal()}
+                      // style={{ width: 300 }}
+                      cover={<img alt="example" src={inventLogo} />}
+                    // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+                    >
+                      <Meta
+                        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                        title={cert.achievement_title}
+                        description="This is the description"
+                      />
+                    </Card>
+                  </Col>
+                );
               });
               that.setState({
                 certificates: arr,
@@ -260,18 +260,17 @@ class App extends Component {
        return true;
      }
     else {
-       return false;
-     }
-   }
+      return false;
+    }
+  }
 
   render() {
     let myPersonName = null;
     let myPersonImage = null;
-    if(this.state.person){
+    if (this.state.person) {
       myPersonName = this.state.person.name;
-      if(this.state.person.image)
-      {
-      myPersonImage = this.state.person.image[0].contentUrl;
+      if (this.state.person.image) {
+        myPersonImage = this.state.person.image[0].contentUrl;
       }
     }
     // const { getFieldDecorator } = this.props.form;
@@ -293,13 +292,18 @@ class App extends Component {
         <div style={{ display: this.state.isSignedIn ? 'block' : 'none' }}>
           <header className="App-header">
             <div className="headerlogo">
-              <img src={Logo} style={{width:'100%', heigh: 'auto'}}></img>
+              <img src={Logo} style={{ width: '100%', heigh: 'auto' }}></img>
             </div>
             <div className="header-elements">
-              <h3 style={{display: this.detectmob() ? 'none' : 'inline-block'}}>{myPersonName}</h3>
+              <h4 style={{ display: this.detectmob() ? 'none' : 'inline-block' }}>{myPersonName}</h4>
               <img className="avatar-header" src={myPersonImage}></img>
+
+              <a className="link-signout" onClick={this.handleSignOut}>
+                    Log out
+                  </a>
             </div>
             
+
           </header>
         </div>
 
@@ -323,9 +327,13 @@ class App extends Component {
               <div>
                 <div>
                   <UserInfo user={this.state.person} />
-                  <button onClick={this.handleSignOut}>
-                    Sign-out
-            </button>
+                  {/* <button className="signin-btn" onClick={this.handleSignOut}>
+                    Log out
+                  </button> */}
+                </div>
+                <div className="separator"/>
+                <div>
+                  <h1>Your Certifications</h1>
                 </div>
                 <br />
                 <Container>
@@ -351,14 +359,14 @@ class App extends Component {
               </div>
               :
               <div className="email-form">
-                  <Input 
-                    style={{marginBottom: "10px"}}
-                    placeholder="Enter your email address"
-                    prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    onChange={this.onBlockStackModalEmailChange}
-                  />
-                  <Button className="signin-btn" loading={this.state.loading} onClick={this.handleblockStackModalOk}>
-                  <span style={{ marginLeft:'0px' }} className="signin-btn-text">Submit</span>
+                <Input
+                  style={{ marginBottom: "10px" }}
+                  placeholder="Enter your email address"
+                  prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                  onChange={this.onBlockStackModalEmailChange}
+                />
+                <Button className="signin-btn" loading={this.state.loading} onClick={this.handleblockStackModalOk}>
+                  <span style={{ marginLeft: '0px' }} className="signin-btn-text">Submit</span>
                 </Button>
                 {/* <br /><br /> */}
               </div>
