@@ -1,6 +1,7 @@
 {
   "name": "blockgpg",
   "version": "0.1.0",
+  "homepage": "https://concatify.io/",
   "scripts": {
     "browserify": "browserify requires.js -o public/bundle.js",
     "start": "npm run browserify; node server.js",
