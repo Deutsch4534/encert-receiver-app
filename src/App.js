@@ -107,7 +107,7 @@ class App extends Component {
                   <Col style={{marginBottom: '20px'}} md={3} sm={12}>
                     <Card
                       onClick={() => that.showModal()}
-                      // style={{ width: 300 }}
+                      style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
                       cover={<img alt="example" src={inventLogo} />}
                     // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
                     >
