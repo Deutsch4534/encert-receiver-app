@@ -1,3 +1,35 @@
+
+.headerlogo{
+  display: inline-block;
+  float: left;
+  margin-left: 10px;
+  width: 150px;
+}
+
+.avatar-header{
+  display: inline-block;
+  width: 30px;
+  height: 30x;
+  border-radius: 128px;
+}
+.header-elements{
+  display: inline-block;
+  float: right;
+  margin-right: 20px;
+
+}
+.header-elements h3{
+  display: inline-block;
+  color:white;
+  margin-bottom: 0px !important;
+  margin-right: 15px;
+}
+
+.email-form{
+  margin: 0 auto;
+  width: 315px;
+}
+
 .App {
   text-align: center;
 }
@@ -5,7 +37,7 @@
 .App-header {
   background-color: #17242a;
   height: 60px;
-  padding: 20px;
+  padding:10px;
   margin-bottom: 40px;
   color: white;
 }
@@ -31,7 +63,7 @@ button {
 }
 
 .signin-btn{
-  height: 40px !important;
+  height: 35px !important;
   background-color: white !important;
   box-shadow: 0 0 11px rgba(0, 0, 0, 0.2) !important;
   border: none;
