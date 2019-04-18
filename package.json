@@ -2,6 +2,7 @@
   "name": "blockgpg",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://134.209.144.113/",
   "scripts": {
     "browserify": "browserify requires.js -o public/bundle.js",
     "start": "npm run browserify; node server.js",
