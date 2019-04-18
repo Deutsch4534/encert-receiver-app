@@ -20,7 +20,7 @@ app.get('/redirect', function(req, res) {
   res.redirect('coolappauth:' + req.query.authResponse);
 })
 
-app.use('/', express.static(__dirname + '/public'))
+app.use('/', express.static(__dirname + '/build'))
 /*app.listen(port, (err) => {
   if (err) {
     return console.log('something bad happened', err)
