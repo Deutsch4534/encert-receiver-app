@@ -15,7 +15,7 @@ class UserInfo extends Component {
               ? this.props.user.image[0].contentUrl
               : "/noprofilepicture.png"
           } />
-        <h1>{this.props.user && this.props.user.name}</h1>
+        <h1>{this.props.user && this.props.user.name ? this.props.user.name : "User Name"}</h1>
       </div>
     )
   }

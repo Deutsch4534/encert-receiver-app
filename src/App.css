@@ -18,7 +18,7 @@
   margin-right: 20px;
 
 }
-.header-elements h3{
+.header-elements h4{
   display: inline-block;
   color:white;
   margin-bottom: 0px !important;
@@ -36,7 +36,7 @@
 
 .App-header {
   background-color: #17242a;
-  height: 60px;
+  height: 50px;
   padding:10px;
   margin-bottom: 40px;
   color: white;
@@ -70,6 +70,20 @@ button {
   color: #17242a !important;
   
 }
+.signout-btn{
+  height: 35px !important;
+  background-color: white !important;
+  box-shadow: 0 0 11px rgba(0, 0, 0, 0.2) !important;
+  border: none;
+  color: #17242a !important;
+}
+.link-signout{
+  text-decoration: underline;
+  color: white;
+  margin-left: 15px;
+  padding: 2px;
+}
+
 .signin-btn:hover{
   color: white !important;
   background-color: #5cdb95 !important;
@@ -77,6 +91,7 @@ button {
 }
 
 .signin-btn-text{
+  padding: 2px;
   margin-left: 10px;
 }
 
@@ -92,4 +107,10 @@ button {
   top: 0;
   bottom: 0;
   margin: auto;
+}
+
+.separator{
+    margin: 0 auto 14px;
+    border-top: #3d9068 2px solid;
+    width: 52px;
 }
