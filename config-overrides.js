@@ -24,7 +24,7 @@ module.exports = {
       //   passphrase: process.env.REACT_HTTPS_PASS
       // };
 			config.headers = {
-				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Origin": "https://browser.blockstack.org",
 				"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE",
 				"Access-Control-Allow-Headers": "Content-Type"
 			}

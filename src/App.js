@@ -8,6 +8,7 @@ import './App.css';
 import { connect } from 'react-redux';
 import { USER_DATA } from './redux/actions/signin-action';
 import 'antd/dist/antd.css'
+import Logo from './assets/logo2.png'
 import blockstackLogo from './assets/blockstack-icon.svg'
 import encertLogo from './assets/logo-blackweb.png'
 import { Container, Row, Col } from 'react-grid-system';
@@ -97,26 +98,26 @@ class App extends Component {
 
           axios.get("https://encert-server.herokuapp.com/issuer/certificate/blockstack/" + userData.identityAddress)
             .then(function (response) {
-             console.log("Certificate Array is: ", response.data.data.results);
+              console.log("Certificate Array is: ", response.data.data.results);
               console.log("CERTIFICATES: " + response.data.data.results);
               let arr = response.data.data.results
               let displayCerts = arr.map(cert => {
                 return (
-                    <Col md={3} sm={12}>
-                        <Card
-                        onClick={() => this.showModal()}
-                        // style={{ width: 300 }}
-                        cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
-                      // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
-                      >
-                        <Meta
-                          avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                          title= {cert.achievement_title}
-                          description="This is the description"
-                        />
-                      </Card>
-                    </Col>
-                  );
+                  <Col md={3} sm={12}>
+                    <Card
+                      onClick={() => this.showModal()}
+                      // style={{ width: 300 }}
+                      cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                    // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+                    >
+                      <Meta
+                        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                        title={cert.achievement_title}
+                        description="This is the description"
+                      />
+                    </Card>
+                  </Col>
+                );
               });
               that.setState({
                 certificates: arr,
@@ -233,13 +234,13 @@ class App extends Component {
   showMessage = (text, type) => {
 
     if (type == "success") {
-      message.success(text, 5000);
+      message.success(text, 3000);
     }
     else if (type == "warning") {
-      message.warning(text, 5000);
+      message.warning(text, 3000);
     }
     else if (type == "error") {
-      message.error(text, 5000);
+      message.error(text, 3000);
     }
     // else
     // {
@@ -247,8 +248,31 @@ class App extends Component {
     // }
   };
 
+  detectmob() { 
+    if( navigator.userAgent.match(/Android/i)
+    || navigator.userAgent.match(/webOS/i)
+    || navigator.userAgent.match(/iPhone/i)
+    || navigator.userAgent.match(/iPod/i)
+    || navigator.userAgent.match(/BlackBerry/i)
+    || navigator.userAgent.match(/Windows Phone/i)
+    ){
+       return true;
+     }
+    else {
+       return false;
+     }
+   }
 
   render() {
+    let myPersonName = null;
+    let myPersonImage = null;
+    if(this.state.person){
+      myPersonName = this.state.person.name;
+      if(this.state.person.image)
+      {
+      myPersonImage = this.state.person.image[0].contentUrl;
+      }
+    }
     // const { getFieldDecorator } = this.props.form;
 
     return (
@@ -257,9 +281,18 @@ class App extends Component {
         {/* <header className="App-header">
           <h1 className="App-title">Encert</h1>
         </header> */}
-        <header className="App-header">
-          <h1 className="App-title">Encert</h1>
-        </header>
+        <div style={{ display: this.state.isSignedIn ? 'block' : 'none' }}>
+          <header className="App-header">
+            <div className="headerlogo">
+              <img src={Logo} style={{width:'100%', heigh: 'auto'}}></img>
+            </div>
+            <div className="header-elements">
+              <h3 style={{display: this.detectmob() ? 'none' : 'inline-block'}}>{myPersonName}</h3>
+              <img className="avatar-header" src={myPersonImage}></img>
+            </div>
+            
+          </header>
+        </div>
 
         <div className="signin-container" style={{ display: this.state.isSignedIn ? 'none' : 'block' }}>
           <div>
@@ -267,32 +300,32 @@ class App extends Component {
           </div>
 
           <Button className="signin-btn" onClick={this.handleSignIn}>
-          <img className="blockstack-logo" src={blockstackLogo} />
-          <span className="signin-btn-text">
-          Sign-in with Blockstack
+            <img className="blockstack-logo" src={blockstackLogo} />
+            <span className="signin-btn-text">
+              Sign-in with Blockstack
           </span>
           </Button>
 
         </div>
 
         <div style={{ display: !this.state.isSignedIn ? 'none' : 'absolute' }}>
-        {
-          !this.state.blockStackModalIsVisible ?
-          <div>
-            <div>
-            <UserInfo user={this.state.person} />
-            <button onClick={this.handleSignOut}>
-              Sign-out
+          {
+            !this.state.blockStackModalIsVisible ?
+              <div>
+                <div>
+                  <UserInfo user={this.state.person} />
+                  <button onClick={this.handleSignOut}>
+                    Sign-out
             </button>
-            </div>
-            <br />
-            <Container>
-            <Row>
-            {this.state.displayCertificates}
-            </Row>
-            </Container>
-            <br />
-            {/* <div>
+                </div>
+                <br />
+                <Container>
+                  <Row>
+                    {this.state.displayCertificates}
+                  </Row>
+                </Container>
+                <br />
+                {/* <div>
               <Card
                 onClick={() => this.showModal()}
                 style={{ width: 300 }}
@@ -306,50 +339,48 @@ class App extends Component {
                 />
               </Card>
             </div> */}
-          </div>
-            :
-            <div>
-              <div>
-                <Input
-                  placeholder="Enter your email address"
-                  prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  onChange={this.onBlockStackModalEmailChange}
-                />
-                <Button type="primary" loading={this.state.loading} onClick={this.handleblockStackModalOk}>
-                  Click me!
-                </Button>
               </div>
-
-              {/* <br /><br /> */}
-            </div>
-        }
+              :
+              <div className="email-form">
+                  <Input 
+                    style={{marginBottom: "10px"}}
+                    placeholder="Enter your email address"
+                    prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    onChange={this.onBlockStackModalEmailChange}
+                  />
+                  <Button className="signin-btn" loading={this.state.loading} onClick={this.handleblockStackModalOk}>
+                  <span style={{ marginLeft:'0px' }} className="signin-btn-text">Submit</span>
+                </Button>
+                {/* <br /><br /> */}
+              </div>
+          }
         </div>
-        
-        
+
+
         <div>
-            <Modal
-              visible={this.state.revokedIsVisible}
-              title="Revoked Certificate Details"
-              onOk={this.handleOk}
-              onCancel={this.handleCancel}
-              footer={[
-                <Button key="submit" type="primary" onClick={this.handleOk}>
-                  OK
+          <Modal
+            visible={this.state.revokedIsVisible}
+            title="Revoked Certificate Details"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button key="submit" type="primary" onClick={this.handleOk}>
+                OK
               </Button>,
-              ]}
-            >
-              <p>{`ID: ${this.state.clickedCertificate.ID}`}</p>
-              <p>{`Achievement Title:  ${this.state.clickedCertificate.achievementTitle}`}</p>
-              <p>{`Domain:  ${this.state.clickedCertificate.domain}`}</p>
-              <p>{`Cover Image: ${this.state.clickedCertificate.coverImage}`}</p>
-              <p>{`Receiver Name: ${this.state.clickedCertificate.receiverName}`}</p>
-              <p>{`Blockstack ID: ${this.state.clickedCertificate.blockstackID}`}</p>
-              <p>{`Issuer Name: ${this.state.clickedCertificate.issuerName}`}</p>
-              <p>{`Description: ${this.state.clickedCertificate.description}`}</p>
-              <p>{`Issue Date: ${this.state.clickedCertificate.issueDate}`}</p>
-              <p>{`Expiration Date: ${this.state.clickedCertificate.expirationDate}`}</p>
-            </Modal>
-          </div>
+            ]}
+          >
+            <p>{`ID: ${this.state.clickedCertificate.ID}`}</p>
+            <p>{`Achievement Title:  ${this.state.clickedCertificate.achievementTitle}`}</p>
+            <p>{`Domain:  ${this.state.clickedCertificate.domain}`}</p>
+            <p>{`Cover Image: ${this.state.clickedCertificate.coverImage}`}</p>
+            <p>{`Receiver Name: ${this.state.clickedCertificate.receiverName}`}</p>
+            <p>{`Blockstack ID: ${this.state.clickedCertificate.blockstackID}`}</p>
+            <p>{`Issuer Name: ${this.state.clickedCertificate.issuerName}`}</p>
+            <p>{`Description: ${this.state.clickedCertificate.description}`}</p>
+            <p>{`Issue Date: ${this.state.clickedCertificate.issueDate}`}</p>
+            <p>{`Expiration Date: ${this.state.clickedCertificate.expirationDate}`}</p>
+          </Modal>
+        </div>
       </div>
     )
   }
