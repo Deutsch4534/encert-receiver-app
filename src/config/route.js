@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
-
+  
 } from 'react-router-dom';
 import history from './history';
 import App from '../App'
@@ -32,14 +32,20 @@ const BasicRouting = () => {
   // history.listen(_ => {
   //     window.scrollTo(0, 0)  
   //     })
-  return (
+  return ( 
     //   <Router onUpdate={() => window.scrollTo(0, 0)} history={history}>
-    <HashRouter history={history}>
-      <div>
-        <Route exact path="/" component={App} />
-        <Route exact path="/home" component={Home} />
-      </div>
-    </HashRouter>
+      <Router  history={history}>
+    <div>
+       
+        
+            <Route exact path="/" component={App} />
+            <Route exact path="/home" component={Home} />
+            
+          
+            
+        
+        </div>
+    </Router>
   )
 }
 
