@@ -10,6 +10,9 @@ import store from './redux/store';
 
 
 ReactDOM.render(
-<Provider store={store}>  <BasicRouting /> </Provider> 
+<Provider store={store}>  <App /> </Provider>
 , document.getElementById('root'));
 registerServiceWorker();
+
+
+{/* <Provider store={store}>  <BasicRouting /> </Provider> */}
