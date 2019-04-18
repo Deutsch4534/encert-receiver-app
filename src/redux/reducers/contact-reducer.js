@@ -5,9 +5,9 @@ const INITIAL_STATE = {
 } 
 
 export default (state = INITIAL_STATE, action) => {
-    console.log('====================================');
-    console.log(action.payload);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log(action.payload);
+    // console.log('====================================');
     switch (action.type) {
         case CONTACT_EDIT_DATA:
         return({

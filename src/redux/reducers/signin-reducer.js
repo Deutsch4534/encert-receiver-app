@@ -7,7 +7,7 @@ user_data : {}
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case USER_LOGIN_DATA : 
-        console.log(action.payload)
+        // console.log(action.payload)
         return({
             user_data : action.payload
         })

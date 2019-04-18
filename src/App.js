@@ -369,8 +369,10 @@ import './App.css';
 import { connect } from 'react-redux';
 import { USER_DATA } from './redux/actions/signin-action';
 import 'antd/dist/antd.css'
+import Logo from './assets/logo2.png'
 import blockstackLogo from './assets/blockstack-icon.svg'
 import encertLogo from './assets/logo-blackweb.png'
+import inventLogo from './assets/invent.png'
 import { Container, Row, Col } from 'react-grid-system';
 
 const blockstack = require('blockstack');
@@ -433,7 +435,7 @@ class App extends Component {
 
   loadPerson() {
     let username = blockstack.loadUserData().username
-    console.log(blockstack.loadUserData(), "user data");
+    // console.log(blockstack.loadUserData(), "user data");
     let userData = blockstack.loadUserData();
     // history.push('/home');
 
@@ -443,8 +445,8 @@ class App extends Component {
       axios.get(`https://encert-server.herokuapp.com/issuer/participant/exist/${userData.identityAddress}`, {
       })
         .then(function (response) {
-
-          console.log("Data exists for blockstack ID in server : ", response.data.data.result);
+          console.log("Response for id check is: ", response);
+          // console.log("Data exists for blockstack ID in server : ", response.data.data.result);
           if (!response.data.data.result) {
             that.setState({ blockStackModalIsVisible: true });
           }
@@ -452,22 +454,22 @@ class App extends Component {
 
           blockstack.lookupProfile(username).then((person) => {
             that.setState({ person });
-            console.log("LOOKUP RETURNS: ", person);
+            // console.log("LOOKUP RETURNS: ", person);
             that.props.USER_DATA(userData);
           })
 
           axios.get("https://encert-server.herokuapp.com/issuer/certificate/blockstack/" + userData.identityAddress)
             .then(function (response) {
              console.log("Certificate Array is: ", response.data.data.results);
-              console.log("CERTIFICATES: " + response.data.data.results);
+              // console.log("CERTIFICATES: " + response.data.data.results);
               let arr = response.data.data.results
-              let displayCerts = arr.map(cert => {
+              let displayCerts = arr.map((cert, i) => {
                 return (
-                    <Col md={3} sm={12}>
+                    <Col key={i} md={3} sm={12}>
                         <Card
-                        onClick={() => this.showModal()}
+                        onClick={() => that.showModal()}
                         // style={{ width: 300 }}
-                        cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                        cover={<img alt="example" src="http://ibaes.iba.edu.pk/wp-content/uploads/2019/03/invent-1-300x189.png" />}
                       // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
                       >
                         <Meta
@@ -489,7 +491,7 @@ class App extends Component {
             .catch(function (error) {
               console.log(error);
             });
-          console.log(that.state, "state");
+          // console.log(that.state, "state");
 
           that.setState({
             userIdentity: true,
@@ -514,14 +516,6 @@ class App extends Component {
     event.preventDefault();
     blockstack.signUserOut(window.location.href)
 
-  }
-  showModal = () => {
-    // console.log(event);
-    this.setState({
-      revokedIsVisible: true,
-      blockStackModalIsVisible: true
-
-    });
   }
   handleOk = () => {
     this.setState({ loading: false, revokedIsVisible: false });
@@ -549,13 +543,15 @@ class App extends Component {
       email: this.state.blockStackEmail
     })
       .then(function (response) {
-        console.log("Server returned response for info insertion: ", response);
-        that.showMessage("Data submitted. Redirecting...", "success");
+        console.log("Server returned response for info insertion: ", response.data);
+        // that.showMessage("Data submitted. Redirecting...", "success");
+        that.showMessage("Data submitted. Redirecting...", "success")
         that.setState({ loading: false, blockStackModalIsVisible: false });
       })
       .catch(function (error) {
         console.log("Error inserting data: ", error);
-        that.showMessage("Error submitting data. Please check your information and retry.", "error");
+        // that.showMessage("Error submitting data. Please check your information and retry.", "error");
+        that.showMessage("This email address has already been registered.", "error")
         that.setState({ loading: false });
       });
 
@@ -594,13 +590,13 @@ class App extends Component {
   showMessage = (text, type) => {
 
     if (type == "success") {
-      message.success(text, 5000);
+      message.success(text, 1);
     }
     else if (type == "warning") {
-      message.warning(text, 5000);
+      message.warning(text, 2.5);
     }
     else if (type == "error") {
-      message.error(text, 5000);
+      message.error(text, 2.5);
     }
     // else
     // {
@@ -608,9 +604,38 @@ class App extends Component {
     // }
   };
 
+  showModal = () => {
+    // alert("Modal is working.");
+    window.open('https://xord.one/');
+  }
+
+
+  detectmob() { 
+    if( navigator.userAgent.match(/Android/i)
+    || navigator.userAgent.match(/webOS/i)
+    || navigator.userAgent.match(/iPhone/i)
+    || navigator.userAgent.match(/iPad/i)
+    || navigator.userAgent.match(/iPod/i)
+    || navigator.userAgent.match(/BlackBerry/i)
+    || navigator.userAgent.match(/Windows Phone/i)
+    ){
+       return true;
+     }
+    else {
+       return false;
+     }
+   }
 
   render() {
     // const { getFieldDecorator } = this.props.form;
+    // console.log("PERSON: ", this.state.person);
+    console.log("Is mobile? ", this.detectmob())
+    let myPerson = null;
+    if(this.state.person)
+    {
+      // console.log("PERSON: ", this.state.person.name);
+      myPerson = this.state.person.name;
+    }
 
     return (
       <div className="App">
@@ -653,20 +678,6 @@ class App extends Component {
             </Row>
             </Container>
             <br />
-            {/* <div>
-              <Card
-                onClick={() => this.showModal()}
-                style={{ width: 300 }}
-                cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
-              // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
-              >
-                <Meta
-                  avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                  title="Card title"
-                  description="This is the description"
-                />
-              </Card>
-            </div> */}
           </div>
             :
             <div>
