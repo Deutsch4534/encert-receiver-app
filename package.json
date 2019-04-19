@@ -4,7 +4,7 @@
   "homepage": "https://encert.app/",
   "scripts": {
     "browserify": "browserify requires.js -o public/bundle.js",
-    "start": "npm run browserify; node server.js",
+    "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"
