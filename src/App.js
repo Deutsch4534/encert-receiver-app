@@ -6,13 +6,17 @@ import { Card, Icon, Avatar, Modal, Button, Input, message } from 'antd';
 import './App.css';
 
 import { connect } from 'react-redux';
-import { USER_DATA } from './redux/actions/signin-action';
+import { USER_DATA, CERTIFICATE_DATA } from './redux/actions/signin-action';
 import 'antd/dist/antd.css'
 import Logo from './assets/logo2.png'
 import blockstackLogo from './assets/blockstack-icon.svg'
 import encertLogo from './assets/logo-blackweb.png'
 import inventLogo from './assets/invent.png'
 import { Container, Row, Col } from 'react-grid-system';
+import {
+  Link  
+} from 'react-router-dom';
+
 
 const blockstack = require('blockstack');
 const { Meta } = Card;
@@ -74,49 +78,53 @@ class App extends Component {
 
   loadPerson() {
     let username = blockstack.loadUserData().username
-    // console.log(blockstack.loadUserData(), "user data");
+    // console.log(blockstack.loadUserData().profile.image[0].contentUrl, "user data");
     let userData = blockstack.loadUserData();
     // history.push('/home');
 
     if (userData.identityAddress) {
       // alert("Identity exists in server. ", userData.identityAddress);
       let that = this;
+      this.props.USER_DATA(userData);
+      console.log("Identity exists in server. ", userData.identityAddress);
       axios.get(`https://encert-server.herokuapp.com/issuer/participant/exist/${userData.identityAddress}`, {
       })
-        .then(function (response) {
-          console.log("Response for id check is: ", response);
-          // console.log("Data exists for blockstack ID in server : ", response.data.data.result);
-          if (!response.data.data.result) {
-            that.setState({ blockStackModalIsVisible: true });
+      .then(function (response) {
+        console.log("Response for id check is: ", response);
+        // console.log("Data exists for blockstack ID in server : ", response.data.data.result);
+        if (!response.data.data.result) {
+          that.setState({ blockStackModalIsVisible: true });
           }
 
 
           blockstack.lookupProfile(username).then((person) => {
             that.setState({ person });
             // console.log("LOOKUP RETURNS: ", person);
-            that.props.USER_DATA(userData);
           })
 
           axios.get("https://encert-server.herokuapp.com/issuer/certificate/blockstack/" + userData.identityAddress)
             .then(function (response) {
+              // console.log(blockstack.loadUserData().profile.image[0],"image")
              console.log("Certificate Array is: ", response.data.data.results);
               // console.log("CERTIFICATES: " + response.data.data.results);
               let arr = response.data.data.results
               let displayCerts = arr.map((cert, i) => {
+                console.log(cert,"certificate data")
                 return (
                   <Col style={{marginBottom: '20px'}} md={3} sm={12}>
-                    <Card
-                      onClick={() => that.showModal()}
+                  <Link to={{ pathname: "/Certificate", search: "?"+cert._id }} target="_blank" onClick={() => that.showModal(cert)} >
+                    <Card                    
                       style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
                       cover={<img alt="example" src={inventLogo} />}
                     // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
                     >
                       <Meta
-                        avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                        // avatar={<Avatar src={(blockstack.loadUserData().profile.imag=='undefined')?(inventLogo):(blockstack.loadUserData().profile.image[0].contentUrl)} />}
                         title={cert.achievement_title}
-                        description="This is the description"
+                        description={cert.event_name}
                       />
                     </Card>
+                  </Link>
                   </Col>
                 );
               });
@@ -243,9 +251,14 @@ class App extends Component {
     // }
   };
 
-  showModal = () => {
+  showModal = (cert) => {
     // alert("Modal is working.");
-    window.open('https://xord.one/');
+    // window.open('https://xord.one/');
+    // this.props.history.push('/showCertificate');
+    // <Link to="route" target="_blank" onClick={(event) => {event.preventDefault(); window.open(this.makeHref("route"));}} />
+
+    console.log("Received certificate details: ", cert);
+    this.props.CERTIFICATE_DATA(cert)
   }
 
 
@@ -327,9 +340,6 @@ class App extends Component {
               <div>
                 <div>
                   <UserInfo user={this.state.person} />
-                  {/* <button className="signin-btn" onClick={this.handleSignOut}>
-                    Log out
-                  </button> */}
                 </div>
                 <div className="separator"/>
                 <div>
@@ -342,20 +352,6 @@ class App extends Component {
                   </Row>
                 </Container>
                 <br />
-                {/* <div>
-              <Card
-                onClick={() => this.showModal()}
-                style={{ width: 300 }}
-                cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
-              // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
-              >
-                <Meta
-                  avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                  title="Card title"
-                  description="This is the description"
-                />
-              </Card>
-            </div> */}
               </div>
               :
               <div className="email-form">
@@ -408,6 +404,9 @@ function mapDispatchToProp(dispatch) {
   return ({
     USER_DATA: (user) => {
       dispatch(USER_DATA(user))
+    },
+    CERTIFICATE_DATA: (certData) => {
+      dispatch(CERTIFICATE_DATA(certData))
     },
   })
 }

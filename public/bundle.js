@@ -43464,7 +43464,7 @@ module.exports={
   "_args": [
     [
       "cheerio@^0.22.0",
-      "/home/ansur/Desktop/Xord One/Encert/encert-receiver-app/node_modules/blockstack"
+      "/media/kashan/New Volume/work/encert-receiver-app/node_modules/blockstack"
     ]
   ],
   "_from": "cheerio@>=0.22.0 <0.23.0",
@@ -43498,7 +43498,7 @@ module.exports={
   "_shasum": "a9baa860a3f9b595a6b81b1a86873121ed3a269e",
   "_shrinkwrap": null,
   "_spec": "cheerio@^0.22.0",
-  "_where": "/home/ansur/Desktop/Xord One/Encert/encert-receiver-app/node_modules/blockstack",
+  "_where": "/media/kashan/New Volume/work/encert-receiver-app/node_modules/blockstack",
   "author": {
     "email": "mattmuelle@gmail.com",
     "name": "Matt Mueller",
@@ -51861,7 +51861,7 @@ module.exports={
   "_args": [
     [
       "elliptic@^6.4.1",
-      "/home/ansur/Desktop/Xord One/Encert/encert-receiver-app/node_modules/blockstack"
+      "/media/kashan/New Volume/work/encert-receiver-app/node_modules/blockstack"
     ]
   ],
   "_from": "elliptic@>=6.4.1 <7.0.0",
@@ -51900,7 +51900,7 @@ module.exports={
   "_shasum": "c2d0b7776911b86722c632c3c06c60f2f819939a",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.4.1",
-  "_where": "/home/ansur/Desktop/Xord One/Encert/encert-receiver-app/node_modules/blockstack",
+  "_where": "/media/kashan/New Volume/work/encert-receiver-app/node_modules/blockstack",
   "author": {
     "email": "fedor@indutny.com",
     "name": "Fedor Indutny"
