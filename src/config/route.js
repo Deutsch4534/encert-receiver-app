@@ -7,6 +7,8 @@ import {
 import history from './history';
 import App from '../App'
 import Home from '../mainPage'
+import { Certificate } from 'crypto';
+import SingleCertificate from '../SingleCertificate';
 // history={history}
 
 // const Routing = () => {
@@ -40,9 +42,8 @@ const BasicRouting = () => {
         
             <Route exact path="/" component={App} />
             <Route exact path="/home" component={Home} />
-            
-          
-            
+
+            <Route exact path="/Certificate" component={SingleCertificate} />
         
         </div>
     </Router>
