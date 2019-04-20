@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/static/media/ibaes-logo.ccc1c8b8.png"
   },
   {
-    "revision": "1fca93577eb2de70e404",
+    "revision": "297f259ca49149522ea4",
     "url": "/static/css/main.9a9ad821.chunk.css"
   },
   {
@@ -24,8 +24,8 @@ self.__precacheManifest = [
     "url": "/static/media/blockstack-icon.f96bc90c.svg"
   },
   {
-    "revision": "fcde0888376313478f87783fa90fd692",
-    "url": "/static/media/logo-blackweb.fcde0888.png"
+    "revision": "09d76c0931c54e437165fe6c2471e211",
+    "url": "/static/media/logo-blackweb.09d76c09.png"
   },
   {
     "revision": "44913b59869ea4573bf257c74bbf413a",
@@ -40,8 +40,8 @@ self.__precacheManifest = [
     "url": "/static/media/IBA-logo.32c3a6db.png"
   },
   {
-    "revision": "1fca93577eb2de70e404",
-    "url": "/static/js/main.1fca9357.chunk.js"
+    "revision": "297f259ca49149522ea4",
+    "url": "/static/js/main.297f259c.chunk.js"
   },
   {
     "revision": "15a6a73d19c8f6dffb989347a389655f",
@@ -80,7 +80,7 @@ self.__precacheManifest = [
     "url": "/static/css/1.afffc78d.chunk.css"
   },
   {
-    "revision": "a9ea10484de4b5cb8f9925163554ff7d",
+    "revision": "32680fc6a2ccc45aeb9a4eb9d0a3a631",
     "url": "/index.html"
   }
 ];

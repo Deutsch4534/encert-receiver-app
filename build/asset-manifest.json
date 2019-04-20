@@ -1,7 +1,7 @@
 {
   "main.css": "/static/css/main.9a9ad821.chunk.css",
-  "main.js": "/static/js/main.1fca9357.chunk.js",
-  "main.js.map": "/static/js/main.1fca9357.chunk.js.map",
+  "main.js": "/static/js/main.297f259c.chunk.js",
+  "main.js.map": "/static/js/main.297f259c.chunk.js.map",
   "static/css/1.afffc78d.chunk.css": "/static/css/1.afffc78d.chunk.css",
   "static/js/1.ba78af7b.chunk.js": "/static/js/1.ba78af7b.chunk.js",
   "static/js/1.ba78af7b.chunk.js.map": "/static/js/1.ba78af7b.chunk.js.map",
@@ -21,10 +21,10 @@
   "static/media/signature1.png": "/static/media/signature1.cad04b91.png",
   "static/media/signature2.png": "/static/media/signature2.a0b0e0b4.png",
   "static/media/Background.jpg": "/static/media/Background.6e443917.jpg",
-  "static/media/logo-blackweb.png": "/static/media/logo-blackweb.fcde0888.png",
+  "static/media/logo-blackweb.png": "/static/media/logo-blackweb.09d76c09.png",
   "static/css/main.9a9ad821.chunk.css.map": "/static/css/main.9a9ad821.chunk.css.map",
   "static/css/1.afffc78d.chunk.css.map": "/static/css/1.afffc78d.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.fecc7e1fb9e4904328c1405d7b021c05.js": "/precache-manifest.fecc7e1fb9e4904328c1405d7b021c05.js",
+  "precache-manifest.a5cf52c0fa8783c155613a906023f333.js": "/precache-manifest.a5cf52c0fa8783c155613a906023f333.js",
   "service-worker.js": "/service-worker.js"
 }
