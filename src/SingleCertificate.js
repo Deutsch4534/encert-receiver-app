@@ -18,13 +18,17 @@ import signature1 from './assets/signature1.png'
 import signature2 from './assets/signature2.png'
 import qrcode from './assets/qrcode.png'
 import background from './assets/Background.jpg';
+import winner from './assets/winner.jpg';
+import runnerup from './assets/runnerup.jpg';
 const axios = require('axios');
-
+let Bground;
 
 class SingleCertificate extends Component {
+  
   state={
     certData:{}
   }
+  
   componentDidMount(){
     let query= this.props.location.search.split('?');
 let that=this;
@@ -43,14 +47,22 @@ let that=this;
     // state = {
     //     certificateData: this.props.certificateData
     // }
-
+    
     render() {
+      (this.state.certData.achievement_title==='Winner')
+      ?Bground=winner
+      : (this.state.certData.achievement_title==='Runner Up')
+      ?Bground=runnerup
+      : (this.state.certData.achievement_title==='Participant')
+      ? Bground = background
+      : console.log("Invalid achievement title.");
+
         console.log(this.props.location,"location")
-        console.log("State is: ", this.state);
+        console.log("State is: ", this.state.certData);
         return (
             <div>
               <div>
-                <div style={{backgroundImage: `url(${background})`, backgroundSize: 'cover'}} className="cert-border">
+                <div style={{backgroundImage: `url(${Bground})`, backgroundSize: 'cover'}} className="cert-border">
                   <Container fluid >
                     <Row>
                       <Col xl={3} lg={3} md={3} xs={4} sm={4}>
