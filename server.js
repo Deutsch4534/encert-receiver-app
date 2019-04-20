@@ -21,6 +21,7 @@ app.get('/redirect', function(req, res) {
 })
 
 app.use('/', express.static(__dirname + '/build'))
+app.use('/certificate?', express.static(__dirname + '/build'))
 /*app.listen(port, (err) => {
   if (err) {
     return console.log('something bad happened', err)
