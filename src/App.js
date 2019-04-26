@@ -324,14 +324,12 @@ class App extends Component {
           <div>
             <img className="logo" src={encertLogo} />
           </div>
-
           <Button className="signin-btn" onClick={this.handleSignIn}>
             <img className="blockstack-logo" src={blockstackLogo} />
             <span className="signin-btn-text">
               Sign-in with Blockstack
           </span>
           </Button>
-
         </div>
 
         <div style={{ display: !this.state.isSignedIn ? 'none' : 'absolute' }}>

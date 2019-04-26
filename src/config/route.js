@@ -7,46 +7,21 @@ import {
 import history from './history';
 import App from '../App'
 import Home from '../mainPage'
+import Login from '../components/Login';
 import { Certificate } from 'crypto';
 import SingleCertificate from '../SingleCertificate';
-// history={history}
 
-// const Routing = () => {
-//   return (
-//     <HashRouter>
-//       <Structure/>
-//     </HashRouter>
-//   )
-// }
-
-// const Structure = () => {
-//   return( <div>
-//   <BasicRouting/>
-//   </div>
-//   )
-// }
-
-// componentDidUpdate() {
-//   window.scrollTo(0,0);
-// }
-// onUpdate={() => window.scrollTo(0, 0)}
 const BasicRouting = () => {
-  // history.listen(_ => {
-  //     window.scrollTo(0, 0)  
-  //     })
-  return ( 
-    //   <Router onUpdate={() => window.scrollTo(0, 0)} history={history}>
-      <Router  history={history}>
-    <div>
-       
-        
-            <Route exact path="/" component={App} />
-            <Route exact path="/home" component={Home} />
 
+  return ( 
+
+  <Router  history={history}>
+    <div>
+            <Route exact path="/" component={Login} />
+            <Route exact path="/Dashboard" component={App} />
             <Route exact path="/Certificate" component={SingleCertificate} />
-        
-        </div>
-    </Router>
+    </div>
+   </Router>
   )
 }
 
