@@ -5,8 +5,6 @@ import { Container, Row, Col, Visible, Hidden } from 'react-grid-system';
 import { Button } from 'antd';
 import './Login.css';
 import './animate.css';
-import inventLogo from '../assets/invent.png'
-import {Button} from 'antd';
 import Loader from 'react-loader-spinner';
 import { css } from '@emotion/core';
 // First way to import

@@ -19,7 +19,7 @@ const BasicRouting = () => {
   <Router  history={history}>
     <div>
             <Route exact path="/" component={Login} />
-            {/* <Route exact path="/" component={App} /> */}
+         
             <Route exact path="/Dashboard" component={Dashboard} />
             <Route exact path="/Certificate" component={SingleCertificate} />
     </div>

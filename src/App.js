@@ -302,7 +302,7 @@ class App extends Component {
         {/* <header className="App-header">
           <h1 className="App-title">Encert</h1>
         </header> */}
-        <div style={{ display: this.state.isSignedIn ? 'block' : 'none' }}>
+        <div style={{ display: this.state.isSignedIn ? 'block' : '' }}>
           <header className="App-header">
             <div className="headerlogo">
               <img src={Logo} style={{ width: '100%', heigh: 'auto' }}></img>
@@ -320,7 +320,7 @@ class App extends Component {
           </header>
         </div>
 
-        <div className="signin-container" style={{ display: this.state.isSignedIn ? 'none' : 'block' }}>
+        {/* <div className="signin-container" style={{ display: this.state.isSignedIn ? 'none' : 'block' }}>
           <div>
             <img className="logo" src={encertLogo} />
           </div>
@@ -330,7 +330,7 @@ class App extends Component {
               Sign-in with Blockstack
           </span>
           </Button>
-        </div>
+        </div> */}
 
         <div style={{ display: !this.state.isSignedIn ? 'none' : 'absolute' }}>
           {
