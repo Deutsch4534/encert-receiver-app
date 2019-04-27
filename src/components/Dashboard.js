@@ -62,7 +62,7 @@ class Dashboard extends Component {
                     console.log(cert,"certificate data")
                     return (
                       <Col style={{marginBottom: '20px'}} md={3} sm={12}>
-                      <Link to={{ pathname: "/Certificate", search: "?"+cert._id }} target="_blank" onClick={() => that.showModal(cert)} >
+                      <Link to={{ pathname: "/certificate", search: "?"+cert._id }} target="_blank" onClick={() => that.showModal(cert)} >
                         <Card                    
                           style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
                           cover={<img alt="example" src={inventLogo} />}
@@ -121,7 +121,14 @@ class Dashboard extends Component {
       }    
 
       componentDidMount() {
-        this.loadPerson();          
+        if(blockstack.isUserSignedIn())
+        {
+          this.loadPerson();          
+        }
+        else
+        {
+          this.props.history.push("/");
+        }
       }
 
     render() {

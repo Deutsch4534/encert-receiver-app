@@ -20,8 +20,8 @@ const BasicRouting = () => {
     <div>
             <Route exact path="/" component={Login} />
          
-            <Route exact path="/Dashboard" component={Dashboard} />
-            <Route exact path="/Certificate" component={SingleCertificate} />
+            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/certificate" component={SingleCertificate} />
     </div>
    </Router>
   )
