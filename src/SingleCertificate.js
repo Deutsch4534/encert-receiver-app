@@ -31,7 +31,7 @@ class SingleCertificate extends Component {
   
   componentDidMount(){
     let query= this.props.location.search.split('?');
-let that=this;
+    let that=this;
       axios.get("https://encert-server.herokuapp.com/issuer/certificate/"+query[1])
       .then(function(response){
         console.log(response.data.data.result,"response data")

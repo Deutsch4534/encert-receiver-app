@@ -7,18 +7,25 @@ import {
   Link  
 } from 'react-router-dom';
 import inventLogo from '../assets/invent.png'
-import {Card, Input, Icon, Button} from 'antd';
-import UserInfo from '../UserInfo';
+import {Card, Input, Icon, Button, message} from 'antd';
+import UserInfo from './UserInfo';
 
 
 const blockstack = require('blockstack');
 const axios = require('axios');
 const { Meta } = Card;
+const Search = Input.Search;
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = { 
+          loading: false,
+          emailNotRegistered: true,
+          isSignedIn: false,
+          blockStackEmail: "",
+          blockstackIdentity: ""
+         }
     }
 
     handleSignOut = (event) => {
@@ -27,30 +34,38 @@ class Dashboard extends Component {
         blockstack.signUserOut(window.location.href);    
     }
 
+    onClickSingleCertificate = (cert) => {
+      console.log("Received certificate details: ", cert);
+      this.props.CERTIFICATE_DATA(cert)
+    }
+  
+
     loadPerson() {
-        let username = blockstack.loadUserData().username;
-        console.log(blockstack.loadUserData().profile.image[0].contentUrl, "user data");
         let userData = blockstack.loadUserData();
+        let username = userData.username;
+        let that = this;
+        let thisPerson = {};
+        if(username.length > 0)
+        {          
+          blockstack.lookupProfile(username).then((person) => {
+            thisPerson = ({person});
+          })
+        }
     
         if (userData.identityAddress) {
           // alert("Identity exists in server. ", userData.identityAddress);
-          let that = this;
           this.props.USER_DATA(userData);
           console.log("Identity exists in server. ", userData.identityAddress);
+
           axios.get(`https://encert-server.herokuapp.com/issuer/participant/exist/${userData.identityAddress}`, {
           })
           .then(function (response) {
             console.log("Response for id check is: ", response);
-            // console.log("Data exists for blockstack ID in server : ", response.data.data.result);
-            if (!response.data.data.result) {
-              that.setState({ blockStackModalIsVisible: true });
-              }
-    
-    
-              blockstack.lookupProfile(username).then((person) => {
-                that.setState({ person });
-                // console.log("LOOKUP RETURNS: ", person);
-              })
+            console.log("Data exists for blockstack ID in server : ", response.data.data.result);
+
+              if (!response.data.data.result) {
+                  that.setState({ emailNotRegistered: true });
+              }      
     
               axios.get("https://encert-server.herokuapp.com/issuer/certificate/blockstack/" + userData.identityAddress)
                 .then(function (response) {
@@ -62,7 +77,7 @@ class Dashboard extends Component {
                     console.log(cert,"certificate data")
                     return (
                       <Col style={{marginBottom: '20px'}} md={3} sm={12}>
-                      <Link to={{ pathname: "/certificate", search: "?"+cert._id }} target="_blank" onClick={() => that.showModal(cert)} >
+                      <Link to={{ pathname: "/certificate", search: "?"+cert._id }} target="_blank" onClick={() => that.onClickSingleCertificate(cert)} >
                         <Card                    
                           style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
                           cover={<img alt="example" src={inventLogo} />}
@@ -80,20 +95,18 @@ class Dashboard extends Component {
                   });
                   that.setState({
                     certificates: arr,
-                    displayCertificates: displayCerts
+                    displayCertificates: displayCerts,
+                    person: ({thisPerson}),
+                    userIdentity: true,
+                    isSignedIn: true,
+                    blockstackIdentity: userData.identityAddress    
                   })
-                  console.log(that.state)
+                  console.log("states is ", that.state);
                 })
     
                 .catch(function (error) {
                   console.log(error);
                 });
-              // console.log(that.state, "state");
-    
-              that.setState({
-                userIdentity: true,
-                blockstackIdentity: userData.identityAddress
-              })
             })
             .catch(function (error) {
               console.log("Error while fetching identity from server. ", error);
@@ -131,7 +144,110 @@ class Dashboard extends Component {
         }
       }
 
+      onEmailChange = (event) => {
+        console.log("Received Input: ", event.target.value);
+        this.setState({
+          blockStackEmail: event.target.value
+        })
+      }
+
+      handleEmailSubmit = () => {
+        this.setState({ loading: true });
+        let that = this;
+        axios.put("https://encert-server.herokuapp.com/issuer/participant/", {
+          blockstack_id: this.state.blockstackIdentity,
+          email: this.state.blockStackEmail
+        })
+          .then(function (response) {
+            console.log("Server returned response for info insertion: ", response.data);
+            // that.showMessage("Data submitted. Redirecting...", "success");
+            that.showMessage("Data submitted. Redirecting...", "success")
+            that.setState({ loading: false, emailNotRegistered: false });
+          })
+          .catch(function (error) {
+            console.log("Error inserting data: ", error);
+            // that.showMessage("Error submitting data. Please check your information and retry.", "error");
+            that.showMessage("This email address has already been registered.", "error")
+            that.setState({ loading: false });
+          });
+    
+      }
+
+      showMessage = (text, type) => {
+
+        if (type == "success") {
+          message.success(text, 1);
+        }
+        else if (type == "warning") {
+          message.warning(text, 2.5);
+        }
+        else if (type == "error") {
+          message.error(text, 2.5);
+        }
+      };    
+
+      filterCertificates = (value) =>
+      {
+        let that = this;
+        const searchValue = value;
+        let ourCertificates = this.state.certificates;
+
+        let displayCerts = ourCertificates.filter((current) => 
+          {
+            console.log(current,"certificate data")
+            if(current.achievement_title.includes(searchValue))
+            {
+              console.log(current,"certificate data")
+              return (
+                <Col style={{marginBottom: '20px'}} md={3} sm={12}>
+                <Link to={{ pathname: "/certificate", search: "?"+current._id }} target="_blank" onClick={() => that.onClickSingleCertificate(current)} >
+                  <Card                    
+                    style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
+                    cover={<img alt="example" src={inventLogo} />}
+                  // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+                  >
+                    <Meta
+                      // avatar={<Avatar src={(blockstack.loadUserData().profile.imag=='undefined')?(inventLogo):(blockstack.loadUserData().profile.image[0].contentUrl)} />}
+                      title={current.achievement_title}
+                      description={current.event_name}
+                    />
+                  </Card>
+                </Link>
+                </Col>
+              );
+            }
+          }
+        )
+
+        console.log("New certificates are: ", displayCerts);
+        that.setState({
+          displayCertificates: displayCerts
+        });
+        // let displayCerts = ourCertificates.map((cert, i) => {
+        //   console.log(cert,"certificate data")
+        //   return (
+        //     <Col style={{marginBottom: '20px'}} md={3} sm={12}>
+        //     <Link to={{ pathname: "/certificate", search: "?"+cert._id }} target="_blank" onClick={() => that.onClickSingleCertificate(cert)} >
+        //       <Card                    
+        //         style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
+        //         cover={<img alt="example" src={inventLogo} />}
+        //       // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+        //       >
+        //         <Meta
+        //           // avatar={<Avatar src={(blockstack.loadUserData().profile.imag=='undefined')?(inventLogo):(blockstack.loadUserData().profile.image[0].contentUrl)} />}
+        //           title={cert.achievement_title}
+        //           description={cert.event_name}
+        //         />
+        //       </Card>
+        //     </Link>
+        //     </Col>
+        //   );
+        // });
+
+      }          
+
     render() {
+        console.log("State is : ", this.state);
         if(blockstack.isUserSignedIn())
         {        
             return (
@@ -155,10 +271,20 @@ class Dashboard extends Component {
                     </header>
                 </div>
 
-                <div style={{ display: !this.state.isSignedIn ? 'none' : 'absolute' }}>
+                <div style={{ display: 'absolute' }}>
                 {
-                !this.state.blockStackModalIsVisible ?
+                    this.state.emailNotRegistered ?
                     <div>
+
+                    <div>
+                    <Search
+                      placeholder="input a rank"
+                      onSearch={value => this.filterCertificates(value)}
+                      enterButton
+                    />
+                    <br />
+                    </div>
+
                     <div>
                         <UserInfo user={this.state.person} />
                     </div>
@@ -180,9 +306,9 @@ class Dashboard extends Component {
                         style={{ marginBottom: "10px" }}
                         placeholder="Enter your email address"
                         prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        onChange={this.onBlockStackModalEmailChange}
+                        onChange={this.onEmailChange}
                     />
-                    <Button className="signin-btn" loading={this.state.loading} onClick={this.handleblockStackModalOk}>
+                    <Button className="signin-btn" loading={this.state.loading} onClick={this.handleEmailSubmit}>
                         <span style={{ marginLeft: '0px' }} className="signin-btn-text">Submit</span>
                     </Button>
                     {/* <br /><br /> */}

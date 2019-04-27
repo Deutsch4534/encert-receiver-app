@@ -137,7 +137,7 @@ class Login extends Component {
 
                     <Col md={4} sm={6} xs={6}>
                 
-                        <div style={{backgroundImage: `url(${encertLogo})`}} className="logo animated  zoomIn delay-1s">
+                        <div style={{backgroundImage: `url(${encertLogo})`}} className="logo animated  zoomIn">
                             
                         </div>
                     </Col>
@@ -154,7 +154,7 @@ class Login extends Component {
 
                                 
                     <Col md={4} sm={8} xs={8}>
-                        <div style={{textAlign:'center',marginTop:'2vh'}} className="animated  fadeIn delay-2s">
+                        <div style={{textAlign:'center',marginTop:'2vh'}} className="animated  fadeIn delay-1s">
                         <Button className="signin-btn " onClick={this.handleSignIn} >
                             <img className="blockstack-logo" src={blockstackLogo} />
                             <span className="signin-btn-text">
@@ -185,5 +185,3 @@ class Login extends Component {
 }
 
 export default Login;
-
-//checking default git push branch

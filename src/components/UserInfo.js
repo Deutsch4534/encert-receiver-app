@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { PushSpinner } from "react-spinners-kit";
 import Loader from 'react-loader-spinner';
 
 import './UserInfo.css';
