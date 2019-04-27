@@ -5,9 +5,19 @@ import { Container, Row, Col, Visible, Hidden } from 'react-grid-system';
 import { Button } from 'antd';
 import './Login.css';
 import './animate.css';
+import inventLogo from '../assets/invent.png'
+import {Button} from 'antd';
+import Loader from 'react-loader-spinner';
+import { css } from '@emotion/core';
+// First way to import
+import { SyncLoader } from 'react-spinners';
 
 const blockstack = require('blockstack');
 
+const override = css`
+    display: block;
+    margin: 10px;
+`;
 
 class Login extends Component {
     constructor(props) {
@@ -22,27 +32,57 @@ class Login extends Component {
         //        this.checkSignedInStatus();
     }
 
-    checkSignedInStatus() {
+    checkSignedInStatus = () => {
+        let that = this;
         if (blockstack.isUserSignedIn()) {
             console.log("User signed in.");
+            // that.props.history.push("/google");
             return true;
         } else if (blockstack.isSignInPending()) {
-            blockstack.handlePendingSignIn().then(function (userData) {
-                window.location = window.location.origin;
-                console.log("Waiting for Sign In.");
-            });
-            return false;
+          blockstack.handlePendingSignIn().then(function (userData) {
+            window.location = window.location.origin;
+            console.log("UserData: ", userData);
+            // that.props.history.push("/google1");
+            // this.props.history.push("/Dashboard");
+          });
+          console.log("False bhejrha hoon.");
+          return false;
         }
     }
 
-    render() {
-
-        console.log("SignIn: ", blockstack.isSignInPending());
-
-        if (blockstack.isSignInPending()) {
-            alert("Sign in request in progress.");
+    render() { 
+        
+        if(blockstack.isSignInPending())
+        {
+            console.log("Sign in request in progress.");
+            blockstack.handlePendingSignIn().then(() => {
+                this.props.history.push("/Dashboard");
+            });
+            return(
+                <div>
+                    {/* <Loader 
+                    type="Grid"
+                    color="#5cdb95"
+                    height="300"	
+                    width="300"
+                    /> */}
+                    <SyncLoader
+                    css={override}
+                    sizeUnit={"px"}
+                    size={30}
+                    color={'rgb(54,215,183)'}
+                    loading={true}
+                    />
+                    <h1>Signing in....</h1>
+                </div>
+           );
         }
-        if (!blockstack.isUserSignedIn()) {
+        else
+        {            
+            console.log("Sign in request completed.");
+        }
+        if(!this.checkSignedInStatus())
+        {
             return (
                 <Container>
                     <Row style={{marginTop:'15vh'}}>
@@ -94,6 +134,9 @@ class Login extends Component {
         }
         else {
             this.props.history.push("/Dashboard");
+            return (
+                <div></div>
+            );
         }
     }
 }
