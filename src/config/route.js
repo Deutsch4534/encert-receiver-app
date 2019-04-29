@@ -5,7 +5,8 @@ import {
 } from 'react-router-dom';
 import history from './history';
 import Login from '../components/Login';
-import Dashboard from '../components/Dashboard';
+// import Dashboard from '../components/Dashboard';
+import AdjustedDashboard from '../components/AdjustedDashboard';
 import SingleCertificate from '../SingleCertificate';
 
 const BasicRouting = () => {
@@ -14,7 +15,7 @@ const BasicRouting = () => {
   <Router  history={history}>
     <div>
             <Route exact path="/" component={Login} />         
-            <Route exact path="/dashboard" component={Dashboard} />
+            <Route exact path="/dashboard" component={AdjustedDashboard} />
             <Route exact path="/certificate" component={SingleCertificate} />
     </div>
    </Router>

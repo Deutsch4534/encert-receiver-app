@@ -1,0 +1,15 @@
+
+
+.header{
+    background-color: #17242a;
+    padding:10px;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.signout{
+    float: right;
+    padding-right: 18px;
+    color: white;   
+}

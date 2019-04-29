@@ -1,6 +1,6 @@
 
 .headerlogo{
-  display: inline-block;
+  
   float: left;
   margin-left: 10px;
   width: 150px;
@@ -36,7 +36,7 @@
 
 .App-header {
   background-color: #17242a;
-  height: 50px;
+  height: 10vh;
   padding:10px;
   margin-bottom: 40px;
   color: white;
@@ -61,6 +61,7 @@
 .link-signout{
   text-decoration: underline;
   color: white;
+  /* align-self: center; */
   margin-left: 15px;
   padding: 2px;
 }
