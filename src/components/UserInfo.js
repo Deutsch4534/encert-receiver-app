@@ -13,6 +13,7 @@ class UserInfo extends Component {
   }
 
   render() {
+    // console.log("USER PROPS ARE: ", this.props);
     return (
       <div className="UserInfo">
 

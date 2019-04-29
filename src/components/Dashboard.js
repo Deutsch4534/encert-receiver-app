@@ -26,6 +26,7 @@ class Dashboard extends Component {
           blockStackEmail: "",
           blockstackIdentity: "",
           displayCertificates: [],
+          userProfile: "",
          }
     }
 
@@ -36,13 +37,14 @@ class Dashboard extends Component {
     }
 
     onClickSingleCertificate = (cert) => {
-      console.log("Received certificate details: ", cert);
+      // console.log("Received certificate details: ", cert);
       this.props.CERTIFICATE_DATA(cert)
     }
   
 
     loadPerson() {
         let userData = blockstack.loadUserData();
+        let profile = userData.profile;
         let username = userData.username;
         let that = this;
         let thisPerson = {};
@@ -56,13 +58,13 @@ class Dashboard extends Component {
         if (userData.identityAddress) {
           // alert("Identity exists in server. ", userData.identityAddress);
           this.props.USER_DATA(userData);
-          console.log("Identity exists in server. ", userData.identityAddress);
+          // console.log("Identity exists in server. ", userData.identityAddress);
 
           axios.get(`https://encert-server.herokuapp.com/issuer/participant/exist/${userData.identityAddress}`, {
           })
           .then(function (response) {
-            console.log("Response for id check is: ", response);
-            console.log("Data exists for blockstack ID in server : ", response.data.data.result);
+            // console.log("Response for id check is: ", response);
+            // console.log("Data exists for blockstack ID in server : ", response.data.data.result);
 
               if (!response.data.data.result) {
                   that.setState({ emailNotRegistered: true });
@@ -70,12 +72,12 @@ class Dashboard extends Component {
     
               axios.get("https://encert-server.herokuapp.com/issuer/certificate/blockstack/" + userData.identityAddress)
                 .then(function (response) {
-                  // console.log(blockstack.loadUserData().profile.image[0],"image")
-                 console.log("Certificate Array is: ", response.data.data.results);
-                  // console.log("CERTIFICATES: " + response.data.data.results);
+                  // // console.log(blockstack.loadUserData().profile.image[0],"image")
+                 // console.log("Certificate Array is: ", response.data.data.results);
+                  // // console.log("CERTIFICATES: " + response.data.data.results);
                   let arr = response.data.data.results
                   let displayCerts = arr.map((cert, i) => {
-                    console.log(cert,"certificate data")
+                    // console.log(cert,"certificate data")
                     return (
                       <Col key = {i} style={{marginBottom: '20px'}} md={3} sm={12}>
                       <Link to={{ pathname: "/certificate", search: "?"+cert._id }} target="_blank" onClick={() => that.onClickSingleCertificate(cert)} >
@@ -98,19 +100,20 @@ class Dashboard extends Component {
                     certificates: arr,
                     displayCertificates: displayCerts,
                     person: ({thisPerson}),
+                    userProfile: profile,
                     userIdentity: true,
                     isSignedIn: true,
                     blockstackIdentity: userData.identityAddress    
                   })
-                  console.log("states is ", that.state);
+                  // console.log("states is ", that.state);
                 })
     
                 .catch(function (error) {
-                  console.log(error);
+                  // console.log(error);
                 });
             })
             .catch(function (error) {
-              console.log("Error while fetching identity from server. ", error);
+              // console.log("Error while fetching identity from server. ", error);
             });
         }
         else {
@@ -146,7 +149,7 @@ class Dashboard extends Component {
       }
 
       onEmailChange = (event) => {
-        console.log("Received Input: ", event.target.value);
+        // console.log("Received Input: ", event.target.value);
         this.setState({
           blockStackEmail: event.target.value
         })
@@ -160,13 +163,13 @@ class Dashboard extends Component {
           email: this.state.blockStackEmail
         })
           .then(function (response) {
-            console.log("Server returned response for info insertion: ", response.data);
+            // console.log("Server returned response for info insertion: ", response.data);
             // that.showMessage("Data submitted. Redirecting...", "success");
             that.showMessage("Data submitted. Redirecting...", "success")
             that.setState({ loading: false, emailNotRegistered: false });
           })
           .catch(function (error) {
-            console.log("Error inserting data: ", error);
+            // console.log("Error inserting data: ", error);
             // that.showMessage("Error submitting data. Please check your information and retry.", "error");
             that.showMessage("This email address has already been registered.", "error")
             that.setState({ loading: false });
@@ -189,8 +192,8 @@ class Dashboard extends Component {
 
       filterCertificates = (value) =>
       {
-        console.log("Search value is: ", value);
-        console.log("Current certificates were: ", this.state.displayCertificates);
+        // console.log("Search value is: ", value);
+        // console.log("Current certificates were: ", this.state.displayCertificates);
         let that = this;
         let searchValue = "";
         if(typeof value !== undefined)
@@ -211,10 +214,10 @@ class Dashboard extends Component {
         let myDisplayCerts = [];
         let displayCerts = ourCertificates.filter((current, index) => 
           {
-            console.log(current,"certificate data")
-            if(current.achievement_title.includes(searchValue))
+            // console.log(current,"certificate data")
+            if(current.achievement_title.toLowerCase().includes(searchValue.toLowerCase()))
             {
-              console.log(current,"certificate data")
+              // console.log(current,"certificate data")
               myDisplayCerts.push(
                 <Col key = {index} style={{marginBottom: '20px'}} md={3} sm={12}>
                 <Link to={{ pathname: "/certificate", search: "?"+current._id }} target="_blank" onClick={() => that.onClickSingleCertificate(current)} >
@@ -255,16 +258,16 @@ class Dashboard extends Component {
 
         if(myDisplayCerts.length < 1)
         {
-          console.log("MATCH!");
+          // console.log("MATCH!");
           myDisplayCerts = <h3>No matching certificate found. Please filter your search result.</h3>
         }
 
-        console.log("New certificates are: ", myDisplayCerts);
+        // console.log("New certificates are: ", myDisplayCerts);
         that.setState({
           displayCertificates: myDisplayCerts
         });
         // let displayCerts = ourCertificates.map((cert, i) => {
-        //   console.log(cert,"certificate data")
+        //   // console.log(cert,"certificate data")
         //   return (
         //     <Col style={{marginBottom: '20px'}} md={3} sm={12}>
         //     <Link to={{ pathname: "/certificate", search: "?"+cert._id }} target="_blank" onClick={() => that.onClickSingleCertificate(cert)} >
@@ -287,8 +290,16 @@ class Dashboard extends Component {
       }          
 
     render() {
-        console.log("State is : ", this.state);
         let displayData = [];
+        let userNameAndImage = {
+          name: "",
+          imageURL: ""
+        }
+        if(this.state.userProfile.image)
+        {
+          userNameAndImage.name = this.state.userProfile.name;
+          userNameAndImage.imageURL = this.state.userProfile.image[0].contentUrl;
+        }
         if(this.state.displayCertificates.length)
         {
           displayData = this.state.displayCertificates;
@@ -296,7 +307,6 @@ class Dashboard extends Component {
         if(blockstack.isUserSignedIn())
         {        
             return (
-                // <div>User is Signed in.</div>
                 <div>
                 <div style={{ display: 'block'}}>
                     <header className="App-header">
@@ -304,8 +314,8 @@ class Dashboard extends Component {
                         <img src={Logo} style={{ width: '100%', heigh: 'auto' }}></img>
                     </div>
                     <div className="header-elements">
-                        <h4 style={{ display: this.detectmob() ? 'none' : 'inline-block' }}>Ansur Mehdi</h4>
-                        <img className="avatar-header" src={"https://encert.app/static/media/logo-blackweb.09d76c09.png"}></img>
+                        <h4 style={{ display: this.detectmob() ? 'none' : 'inline-block' }}>{userNameAndImage.name}</h4>
+                        <img className="avatar-header" src={userNameAndImage.imageURL}></img>
         
                         <a className="link-signout" onClick={this.handleSignOut}>
                             Log out
@@ -332,7 +342,7 @@ class Dashboard extends Component {
                     </div>
 
                     <div>
-                        <UserInfo user={this.state.person} />
+                        <UserInfo user={this.state.userProfile} />
                     </div>
                     <div className="separator"/>
                     <div>
