@@ -189,9 +189,24 @@ class Dashboard extends Component {
 
       filterCertificates = (value) =>
       {
+        console.log("Search value is: ", value);
         console.log("Current certificates were: ", this.state.displayCertificates);
         let that = this;
-        const searchValue = value;
+        let searchValue = "";
+        if(typeof value !== undefined)
+        {
+          if(value.target)
+          {
+            if(value.target.value)
+            {
+              searchValue = value.target.value;
+            }  
+          }
+          else if(value.length)
+          {
+            searchValue = value;
+          }
+        }
         let ourCertificates = this.state.certificates;
         let myDisplayCerts = [];
         let displayCerts = ourCertificates.filter((current, index) => 
@@ -237,6 +252,12 @@ class Dashboard extends Component {
             }
           }
         )
+
+        if(myDisplayCerts.length < 1)
+        {
+          console.log("MATCH!");
+          myDisplayCerts = <h3>No matching certificate found. Please filter your search result.</h3>
+        }
 
         console.log("New certificates are: ", myDisplayCerts);
         that.setState({
@@ -304,6 +325,7 @@ class Dashboard extends Component {
                     <Search
                       placeholder="input a rank"
                       onSearch={value => this.filterCertificates(value)}
+                      onChange={value => this.filterCertificates(value)}
                       enterButton
                     />
                     <br />
