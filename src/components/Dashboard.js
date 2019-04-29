@@ -24,7 +24,8 @@ class Dashboard extends Component {
           emailNotRegistered: true,
           isSignedIn: false,
           blockStackEmail: "",
-          blockstackIdentity: ""
+          blockstackIdentity: "",
+          displayCertificates: [],
          }
     }
 
@@ -76,7 +77,7 @@ class Dashboard extends Component {
                   let displayCerts = arr.map((cert, i) => {
                     console.log(cert,"certificate data")
                     return (
-                      <Col style={{marginBottom: '20px'}} md={3} sm={12}>
+                      <Col key = {i} style={{marginBottom: '20px'}} md={3} sm={12}>
                       <Link to={{ pathname: "/certificate", search: "?"+cert._id }} target="_blank" onClick={() => that.onClickSingleCertificate(cert)} >
                         <Card                    
                           style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
@@ -188,16 +189,34 @@ class Dashboard extends Component {
 
       filterCertificates = (value) =>
       {
+        console.log("Current certificates were: ", this.state.displayCertificates);
         let that = this;
         const searchValue = value;
         let ourCertificates = this.state.certificates;
-
-        let displayCerts = ourCertificates.filter((current) => 
+        let myDisplayCerts = [];
+        let displayCerts = ourCertificates.filter((current, index) => 
           {
             console.log(current,"certificate data")
             if(current.achievement_title.includes(searchValue))
             {
               console.log(current,"certificate data")
+              myDisplayCerts.push(
+                <Col key = {index} style={{marginBottom: '20px'}} md={3} sm={12}>
+                <Link to={{ pathname: "/certificate", search: "?"+current._id }} target="_blank" onClick={() => that.onClickSingleCertificate(current)} >
+                  <Card                    
+                    style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
+                    cover={<img alt="example" src={inventLogo} />}
+                  // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+                  >
+                    <Meta
+                      // avatar={<Avatar src={(blockstack.loadUserData().profile.imag=='undefined')?(inventLogo):(blockstack.loadUserData().profile.image[0].contentUrl)} />}
+                      title={current.achievement_title}
+                      description={current.event_name}
+                    />
+                  </Card>
+                </Link>
+                </Col>
+              );
               return (
                 <Col style={{marginBottom: '20px'}} md={3} sm={12}>
                 <Link to={{ pathname: "/certificate", search: "?"+current._id }} target="_blank" onClick={() => that.onClickSingleCertificate(current)} >
@@ -219,9 +238,9 @@ class Dashboard extends Component {
           }
         )
 
-        console.log("New certificates are: ", displayCerts);
+        console.log("New certificates are: ", myDisplayCerts);
         that.setState({
-          displayCertificates: displayCerts
+          displayCertificates: myDisplayCerts
         });
         // let displayCerts = ourCertificates.map((cert, i) => {
         //   console.log(cert,"certificate data")
@@ -248,6 +267,11 @@ class Dashboard extends Component {
 
     render() {
         console.log("State is : ", this.state);
+        let displayData = [];
+        if(this.state.displayCertificates.length)
+        {
+          displayData = this.state.displayCertificates;
+        }
         if(blockstack.isUserSignedIn())
         {        
             return (
