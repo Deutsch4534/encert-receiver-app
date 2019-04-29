@@ -10,6 +10,8 @@ import inventLogo from '../assets/invent.png'
 import { Card, Input, Icon, Button, message } from 'antd';
 import UserInfo from './UserInfo';
 import './AdjustedDashboard.css';
+import 'tachyons';
+import UserModal from './UserModal';
 
 
 const blockstack = require('blockstack');
@@ -27,6 +29,8 @@ class AdjustedDashboard extends Component {
       blockStackEmail: "",
       blockstackIdentity: "",
       displayCertificates: [],
+      userProfile: "",
+      modalopen:false,
     }
   }
 
@@ -44,6 +48,7 @@ class AdjustedDashboard extends Component {
 
   loadPerson() {
     let userData = blockstack.loadUserData();
+    let profile = userData.profile;
     let username = userData.username;
     let that = this;
     let thisPerson = {};
@@ -80,6 +85,7 @@ class AdjustedDashboard extends Component {
                   <Col key={i} style={{ marginBottom: '20px' }} md={3} sm={12}>
                     <Link to={{ pathname: "/certificate", search: "?" + cert._id }} target="_blank" onClick={() => that.onClickSingleCertificate(cert)} >
                       <Card
+                      className='grow card'
                         style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
                         cover={<img alt="example" src={inventLogo} />}
                       // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
@@ -98,6 +104,7 @@ class AdjustedDashboard extends Component {
                 certificates: arr,
                 displayCertificates: displayCerts,
                 person: ({ thisPerson }),
+                userProfile: profile,
                 userIdentity: true,
                 isSignedIn: true,
                 blockstackIdentity: userData.identityAddress
@@ -213,10 +220,10 @@ class AdjustedDashboard extends Component {
           </Col>
         );
         return (
-          <Col style={{ marginBottom: '20px' }} md={3} sm={12}>
+          <Col style={{ marginBottom: '20px' }}  className="card" md={3} sm={12}>
             <Link to={{ pathname: "/certificate", search: "?" + current._id }} target="_blank" onClick={() => that.onClickSingleCertificate(current)} >
               <Card
-                style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
+             
                 cover={<img alt="example" src={inventLogo} />}
               // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
               >
@@ -260,82 +267,91 @@ class AdjustedDashboard extends Component {
 
   }
 
+  modaluser=()=>{
+this.setState({modalopen:!this.state.modalopen});
+console.log("wow");
+  }
+
   render() {
+
+
+
     console.log("State is : ", this.state);
     let displayData = [];
+    let userNameAndImage = {
+      name: "",
+      imageURL: ""
+    }
+    if(this.state.userProfile.image)
+    {
+      userNameAndImage.name = this.state.userProfile.name;
+      userNameAndImage.imageURL = this.state.userProfile.image[0].contentUrl;
+    }
     if (this.state.displayCertificates.length) {
       displayData = this.state.displayCertificates;
     }
     if (blockstack.isUserSignedIn()) {
       return (
         // <div>User is Signed in.</div>
-        <Container fluid style={{height:'100vh'}}>
-          <Row className="header" style={{height:'10vh'}}>
+        <div>
+{
+  (this.state.modalopen===true)
+  ? <UserModal/>
+  :console.log("no modal")
+}
 
-            <Col md={3}>
-              <img src={Logo} ></img>
-
-            </Col>
-
-            <Col md={7}>
-
-            </Col>
-
-            <Col md={2} style={{ alignSelf: 'center' }} >
-
-              <a className="signout" onClick={this.handleSignOut}>
-                Log out
-              </a>
-
-           </Col>
-
-          </Row>
+          <div style={{ display: 'block'}}>
+                    <header className="App-header">
+                    <div className="headerlogo">
+                        <img src={Logo} style={{ width: '100%', heigh: 'auto' }}></img>
+                    </div>
+                    <div className="header-elements">
+                        <h4 style={{ display: this.detectmob() ? 'none' : 'inline-block' }}>{userNameAndImage.name}</h4>
+                        <img className="avatar-header" src={userNameAndImage.imageURL} onClick={this.modaluser}></img>
+        
+                        <a className="link-signout" onClick={this.handleSignOut}>
+                            Log out
+                        </a>
+                    </div>
+                    
+        
+                    </header>
+                </div>
 
           {/* <div style={{ display: 'absolute' }}> */}
           {
             this.state.emailNotRegistered ?
-              // <div>
+              <div>
 
-              // <div>
-              // <Search
-              //   placeholder="input a rank"
-              //   onSearch={value => this.filterCertificates(value)}
-              //   enterButton
-              // />
-              // <br />
-              // </div>
-
-              // <div>
-              //     <UserInfo user={this.state.person} />
-              // </div>
-              // <div className="separator"/>
-              // <div>
-              //     <h1>Your Certifications</h1>
-              // </div>
-              // <br />
-              // <Container>
-              //     <Row>
-              //     {this.state.displayCertificates}
-              //     </Row>
-              // </Container>
-              // <br />
-              // </div>
-
-
-              <Row>
-                <Col md={3} style={{height:'90vh',borderRight:'1px solid black'}} >
-                <UserInfo user={this.state.person} />
-                </Col>
-
-                <Col md={9}>
-               
-                </Col>
+        <div className="search">
+              <div>
+              <Search
+                placeholder="input a rank"
+                onSearch={value => this.filterCertificates(value)}
+                enterButton
+                
+              />
+              
+              </div>
+        </div>
+              {/* <div>
+                  <UserInfo user={this.state.userProfile} />
+              </div> */}
+            <div className="search">
+              <div className="separator" style={{marginTop:'5vh'}}/>
+            
+                  <h1>Your Certifications</h1>
+              </div>
+              <br />
              
-              </Row>
-
-
-
-
+              <Container >
+                  <Row style={{textAlign:'center', justifyContent: 'center'}}>
+                  {this.state.displayCertificates}
+                  </Row>
+              </Container>
+              <br />
+              </div>
+          
               :
               <div className="email-form">
                 <Input
@@ -351,7 +367,7 @@ class AdjustedDashboard extends Component {
               </div>
           }
 
-        </Container>
+        </div>
         // </div>
       );
     }

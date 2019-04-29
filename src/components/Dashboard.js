@@ -395,7 +395,13 @@ function mapDispatchToProp(dispatch) {
       },
     })
   }  
-
+  let userNameAndImage let userNameAndImage = {
+    name: "",
+    imageURL: ""
+  } = {
+    name: "",
+    imageURL: ""
+  }
 export default connect(null, mapDispatchToProp)(Dashboard);
 
 // export default Dashboard;
