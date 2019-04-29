@@ -10,7 +10,6 @@ import inventLogo from '../assets/invent.png'
 import {Card, Input, Icon, Button, message} from 'antd';
 import UserInfo from './UserInfo';
 
-
 const blockstack = require('blockstack');
 const axios = require('axios');
 const { Meta } = Card;

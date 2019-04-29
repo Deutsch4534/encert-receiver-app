@@ -20,24 +20,71 @@ import qrcode from './assets/qrcode.png'
 import background from './assets/Background.jpg';
 import winner from './assets/winner.jpg';
 import runnerup from './assets/runnerup.jpg';
+
+var QRCode = require('qrcode');
 const axios = require('axios');
 let Bground;
 
 class SingleCertificate extends Component {
   
   state={
-    certData:{}
+    certData:{},
+    QRCode: ""
   }
-  
+
+    generateQrCodes = async (certificate) => {
+    try {
+//          for (let i = 0; i < certificates.length; i++) {
+        let qr = await QRCode.toDataURL('https://encert.app/certificate?' + certificate._id);
+        // this.setState({
+        //   qrImage: qr
+        // })
+        return qr;
+        //            await download(qr, `${certificates[i].receiver_name} , team ${certificates[i].team_name}.png`);
+//          }
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
+   }
+
+   async getQRCode(certificate) {     
+    console.log("Getting QR for cert: ", certificate);
+    try {
+      //          for (let i = 0; i < certificates.length; i++) {
+              let qr = await QRCode.toDataURL('https://encert.app/certificate?' + certificate._id);
+              
+              console.log("QR: ", qr);
+              this.setState({
+                QRCode: qr
+              })
+              return qr;
+              //            await download(qr, `${certificates[i].receiver_name} , team ${certificates[i].team_name}.png`);
+      //          }
+          } catch (e) {
+            console.log(e);
+            return null;
+          }
+    }
+
   componentDidMount(){
     let query= this.props.location.search.split('?');
     let that=this;
       axios.get("https://encert-server.herokuapp.com/issuer/certificate/"+query[1])
       .then(function(response){
-        console.log(response.data.data.result,"response data")
-        that.setState({
-          certData:response.data.data.result
-        })
+        console.log("Certificate ", response.data.data.result)
+        that.getQRCode(response.data.data.result);
+        try {
+                  that.setState({
+                    certData: response.data.data.result,
+                  })
+                  // return qr;
+                  //            await download(qr, `${certificates[i].receiver_name} , team ${certificates[i].team_name}.png`);
+          //          }
+              } catch (e) {
+                console.log(e);
+                // return null;
+              }
       })
       .catch(function(error){
         console.log(error)
@@ -49,6 +96,8 @@ class SingleCertificate extends Component {
     // }
     
     render() {
+      console.log("My QR is: ", this.state.QRCode);
+
       (this.state.certData.achievement_title==='Winner')
       ?Bground=winner
       : (this.state.certData.achievement_title==='Runner Up')
@@ -58,7 +107,7 @@ class SingleCertificate extends Component {
       : console.log("Invalid achievement title.");
 
         console.log(this.props.location,"location")
-        console.log("State is: ", this.state.certData);
+        console.log("State is: ", this.state);
         return (
             <div>
               <div>
@@ -171,7 +220,7 @@ class SingleCertificate extends Component {
                       </Hidden>
       
                       <Hidden sm xs>
-                      <Col style={{backgroundImage: `url(${qrcode})`}} className="qr-container" md={2} xs={12} sm={12} >
+                      <Col style={{backgroundImage: `url(${this.state.QRCode})`}} className="qr-container" md={2} xs={12} sm={12} >
                         <div>
                           
                         </div>
@@ -212,12 +261,12 @@ class SingleCertificate extends Component {
           );
         }
 }
-// function mapStateToProp(state) {
-//     console.log(state)
-//     return ({
-//         certificateData: state.signIn_reducer.certificate_data,
-//     })
-// }
+function mapStateToProp(state) {
+    console.log(state)
+    return ({
+        certificateData: state.signIn_reducer.certificate_data,
+    })
+}
 
-// export default connect(mapStateToProp,null)(SingleCertificate);
-export default SingleCertificate;
+export default connect(mapStateToProp,null)(SingleCertificate);
+// export default SingleCertificate;
