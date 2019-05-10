@@ -16,7 +16,7 @@ import fm91 from './assets/fm91.png'
 import reducers from './redux/reducers';
 import signature1 from './assets/signature1.png'
 import signature2 from './assets/signature2.png'
-import qrcode from './assets/qrcode.png'
+//import qrcode from './assets/qrcode.png'
 import background from './assets/Background.jpg';
 import winner from './assets/winner.jpg';
 import runnerup from './assets/runnerup.jpg';
@@ -134,10 +134,16 @@ class SingleCertificate extends Component {
                         <img className="header-logo-right" src={ibaesLogo} />
                       </Col>
                     </Row>
-      
-                    <div>
-                      <h3 className="text-center text-uppercase">This certificate is awarded to</h3>
-                    </div>
+      {
+         (this.state.certData.achievement_title==='Organiser')
+         ? <div>
+         <h3 className="text-center text-uppercase">THIS CERTIFICATION IS PROUDLY PRESENTED TO</h3>
+       </div>
+       : <div>
+       <h3 className="text-center text-uppercase">This certificate is awarded to</h3>
+     </div>
+      }
+                   
                     <Row>
                       <Col md={3} sm={1} xs={1}>
       
@@ -170,12 +176,24 @@ class SingleCertificate extends Component {
                     </Row>
                   
                   </Container>
-                  <div>
-                    <p className="text-center">for participation and remarkable contribution towards</p>
-                    <p className="text-center"><strong>INVENT 2019 - THE ENTREPRENEURIAL CHALLENGE</strong></p>
-                    <p className="text-center">organized by IBA Entrepreneurship Society</p>
-                    <p className="text-center">At IBA Karachi from 19th-21st April 2019</p>
-                  </div>
+                  {
+                    (this.state.certData.achievement_title==='Organiser')
+                    ?
+                    
+                       <div>
+                       <p className="text-center" style={{marginTop:'3px'}}>for their remarkable contribution as Organizing Team Member in</p>
+                       <p className="text-center"><strong>INVENT 2019 - THE ENTREPRENEURIAL CHALLENGE</strong></p>
+                       <p className="text-center">organized by IBA Entrepreneurship Society</p>
+                       <p className="text-center">At IBA Karachi from 19th-21st April 2019</p>
+                       </div>
+                      :   <div>
+                      <p className="text-center" style={{marginTop:'3px'}}>for participation and remarkable contribution towards</p>
+                      <p className="text-center"><strong>INVENT 2019 - THE ENTREPRENEURIAL CHALLENGE</strong></p>
+                      <p className="text-center">organized by IBA Entrepreneurship Society</p>
+                      <p className="text-center">At IBA Karachi from 19th-21st April 2019</p>
+                      </div>
+                  }
+                 
                   <div>
                   <Container fluid style={{marginTop:'5vh'}} >
                     <Row>
@@ -243,14 +261,14 @@ class SingleCertificate extends Component {
                          </div>
                         </div>
                       </Col>
-      
+     
                       <Visible sm xs>
-                      <Col style={{backgroundImage: `url(${qrcode})`}} className="qr-container" md={2} xs={12} sm={12} >
+                      <Col style={{backgroundImage: `url(${this.state.QRCode})`}} className="qr-container" md={2} xs={12} sm={12} >
                         <div>
                           
                         </div>
                       </Col >
-                      </Visible>
+                      </Visible> 
                     </Row>
       
                   </Container>
