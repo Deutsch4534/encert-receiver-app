@@ -397,6 +397,8 @@ class App extends Component {
   }
 }
 
+//asd
+
 
 function mapDispatchToProp(dispatch) {
   return ({
