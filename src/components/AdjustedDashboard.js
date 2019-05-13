@@ -222,11 +222,12 @@ class AdjustedDashboard extends Component {
         return (
           <Col style={{ marginBottom: '20px' }}  className="card" md={3} sm={12}>
             <Link to={{ pathname: "/certificate", search: "?" + current._id }} target="_blank" onClick={() => that.onClickSingleCertificate(current)} >
-              <Card
-             
-                cover={<img alt="example" src={inventLogo} />}
-              // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
-              >
+                  <Card
+                    className='grow card'
+                    style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
+                    cover={<img alt="example" src={inventLogo} />}
+                    // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+                  >
                 <Meta
                   // avatar={<Avatar src={(blockstack.loadUserData().profile.imag=='undefined')?(inventLogo):(blockstack.loadUserData().profile.image[0].contentUrl)} />}
                   title={current.achievement_title}
