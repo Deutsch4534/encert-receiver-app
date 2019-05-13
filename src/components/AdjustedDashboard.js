@@ -215,16 +215,17 @@ class AdjustedDashboard extends Component {
     let myDisplayCerts = [];
     let displayCerts = ourCertificates.filter((current, index) => {
       console.log(current, "certificate data")
-      if (current.achievement_title.includes(searchValue)) {
+      if (current.achievement_title.toLowerCase().includes(searchValue.toLowerCase())) {
         console.log(current, "certificate data")
         myDisplayCerts.push(
           <Col key={index} style={{ marginBottom: '20px' }} md={3} sm={12}>
             <Link to={{ pathname: "/certificate", search: "?" + current._id }} target="_blank" onClick={() => that.onClickSingleCertificate(current)} >
-              <Card
-                style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
-                cover={<img alt="example" src={inventLogo} />}
-              // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
-              >
+                <Card
+                      className='grow card'
+                        style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)' }}
+                        cover={<img alt="example" src={inventLogo} />}
+                      // actions={[<Icon type="setting" />, <Icon type="edit" />, <Icon type="ellipsis" />]}
+                      >
                 <Meta
                   // avatar={<Avatar src={(blockstack.loadUserData().profile.imag=='undefined')?(inventLogo):(blockstack.loadUserData().profile.image[0].contentUrl)} />}
                   title={current.achievement_title}
@@ -253,9 +254,16 @@ class AdjustedDashboard extends Component {
           </Col>
         );
       }
+      else
+      {
+        return <h1>No certificates found for this search. Please re-check your entry.</h1>
+      }
     }
     )
-
+    if(myDisplayCerts.length < 1)
+    {
+      myDisplayCerts[myDisplayCerts.length] = (<h2>No certificates found for this search. Please re-check your entry.</h2>);
+    }
     console.log("New certificates are: ", myDisplayCerts);
     that.setState({
       displayCertificates: myDisplayCerts
@@ -344,6 +352,7 @@ console.log("wow");
               <Search
                 placeholder="input a rank"
                 onSearch={value => this.filterCertificates(value)}
+                onChange={value => this.filterCertificates(value)}
                 enterButton
                 
               />
