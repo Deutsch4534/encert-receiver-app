@@ -193,9 +193,24 @@ class AdjustedDashboard extends Component {
   };
 
   filterCertificates = (value) => {
-    console.log("Current certificates were: ", this.state.displayCertificates);
+    let searchValue = '';
+
+    if(typeof value !== undefined)
+    {
+      if(value.target)
+      {
+        if(value.target.value)
+        {
+          searchValue = value.target.value;
+        }  
+      }
+      else if(value.length)
+      {
+        searchValue = value;
+      }
+    }
+
     let that = this;
-    const searchValue = value;
     let ourCertificates = this.state.certificates;
     let myDisplayCerts = [];
     let displayCerts = ourCertificates.filter((current, index) => {
