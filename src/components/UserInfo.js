@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { PushSpinner } from "react-spinners-kit";
 import Loader from 'react-loader-spinner';
 
 import './UserInfo.css';
@@ -14,6 +13,7 @@ class UserInfo extends Component {
   }
 
   render() {
+    // console.log("USER PROPS ARE: ", this.props);
     return (
       <div className="UserInfo">
 

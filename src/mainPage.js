@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserInfo from './UserInfo';
+import UserInfo from './components/UserInfo';
 
 const blockstack = require('blockstack');
 

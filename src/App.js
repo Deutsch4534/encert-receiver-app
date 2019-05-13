@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserInfo from './UserInfo';
+import UserInfo from './components/UserInfo';
 
 import { Card, Icon, Avatar, Modal, Button, Input, message } from 'antd';
 
@@ -302,7 +302,7 @@ class App extends Component {
         {/* <header className="App-header">
           <h1 className="App-title">Encert</h1>
         </header> */}
-        <div style={{ display: this.state.isSignedIn ? 'block' : 'none' }}>
+        <div style={{ display: this.state.isSignedIn ? 'block' : '' }}>
           <header className="App-header">
             <div className="headerlogo">
               <img src={Logo} style={{ width: '100%', heigh: 'auto' }}></img>
@@ -320,19 +320,17 @@ class App extends Component {
           </header>
         </div>
 
-        <div className="signin-container" style={{ display: this.state.isSignedIn ? 'none' : 'block' }}>
+        {/* <div className="signin-container" style={{ display: this.state.isSignedIn ? 'none' : 'block' }}>
           <div>
             <img className="logo" src={encertLogo} />
           </div>
-
           <Button className="signin-btn" onClick={this.handleSignIn}>
             <img className="blockstack-logo" src={blockstackLogo} />
             <span className="signin-btn-text">
               Sign-in with Blockstack
           </span>
           </Button>
-
-        </div>
+        </div> */}
 
         <div style={{ display: !this.state.isSignedIn ? 'none' : 'absolute' }}>
           {
@@ -398,6 +396,8 @@ class App extends Component {
     )
   }
 }
+
+//asd
 
 
 function mapDispatchToProp(dispatch) {
